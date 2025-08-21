@@ -8,35 +8,47 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 15 100% 97%;
+    --foreground: 220 15% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 18 87% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 20% 95%;
+    --secondary-foreground: 220 15% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 20% 95%;
+    --muted-foreground: 220 8% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 260 60% 95%;
+    --accent-foreground: 260 40% 20%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 20% 90%;
+    --input: 240 20% 90%;
+    --ring: 18 87% 60%;
 
-    --radius: 0.5rem;
+    /* Portfolio specific colors */
+    --hero: 15 100% 97%;
+    --hero-foreground: 220 15% 15%;
+    --gradient-primary: linear-gradient(135deg, hsl(15 100% 97%), hsl(240 60% 98%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(240 60% 99%));
+    --gradient-accent: linear-gradient(135deg, hsl(18 87% 60%), hsl(25 95% 53%));
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(220 15% 15% / 0.08);
+    --shadow-medium: 0 8px 30px hsl(220 15% 15% / 0.12);
+    --shadow-strong: 0 15px 40px hsl(220 15% 15% / 0.15);
+
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -99,7 +111,45 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .hero-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .card-gradient {
+    background: var(--gradient-card);
+  }
+  
+  .accent-gradient {
+    background: var(--gradient-accent);
+  }
+  
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .shadow-portfolio {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-portfolio-hover {
+    box-shadow: var(--shadow-medium);
+  }
+  
+  .skill-card {
+    @apply bg-card rounded-2xl p-6 shadow-portfolio hover:shadow-portfolio-hover transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .service-card {
+    @apply card-gradient rounded-2xl p-8 shadow-portfolio hover:shadow-portfolio-hover transition-all duration-300 hover:-translate-y-2;
   }
 }
