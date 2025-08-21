@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { Mail, Phone, Github, MapPin, Send, Check } from 'lucide-react';
+import { Mail, Phone, Github, MapPin, Send, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 const ContactSection = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +16,10 @@ const ContactSection = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize EmailJS
+  emailjs.init('RQgNj1wK1EosY6leU');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -21,14 +28,46 @@ const ContactSection = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+    setIsLoading(true);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Abdul Manan',
+      };
+
+      await emailjs.send(
+        'service_ujq5me5',
+        'template_al295ua',
+        templateParams
+      );
+
+      setIsSubmitted(true);
+      toast({
+        title: "Message sent successfully!",
+        description: "Thank you for your message. I'll get back to you soon!",
+      });
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      }, 3000);
+
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "Failed to send message",
+        description: "Something went wrong. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -212,9 +251,18 @@ const ContactSection = () => {
                     />
                   </div>
                   
-                  <Button type="submit" size="lg" className="w-full accent-gradient text-white">
-                    <Send className="w-4 h-4 mr-2" />
-                    Send Message
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full accent-gradient text-white"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Send className="w-4 h-4 mr-2" />
+                    )}
+                    {isLoading ? 'Sending...' : 'Send Message'}
                   </Button>
                 </form>
               )}
