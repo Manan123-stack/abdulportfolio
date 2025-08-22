@@ -69,7 +69,7 @@ const HeroSection = () => {
           {/* Right Content - Image */}
           <div className="relative">
             <div className="relative">
-              <div className="w-full h-[500px] rounded-2xl overflow-hidden shadow-portfolio">
+              <div className="w-full h-[500px] rounded-full overflow-hidden shadow-portfolio">
                 <img
                   src={heroImage}
                   alt="Abdul Manan - Full Stack Web Developer"
